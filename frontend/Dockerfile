@@ -1,4 +1,5 @@
-FROM node:18
+# Build stage
+FROM node:18 AS builder
 
 WORKDIR /app
 
@@ -12,6 +13,15 @@ ENV VITE_BACKEND_URL=$VITE_BACKEND_URL
 
 RUN npm run build
 
-EXPOSE 5173
+# Production stage with Nginx
+FROM nginx:alpine
 
-CMD ["npm", "start"]
+# Copy built files to nginx html directory
+COPY --from=builder /app/dist /usr/share/nginx/html
+
+# Copy nginx configuration
+COPY nginx.conf /etc/nginx/conf.d/default.conf
+
+EXPOSE 80
+
+CMD ["nginx", "-g", "daemon off;"]
