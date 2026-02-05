@@ -5,7 +5,7 @@ import UsernameEntry from './components/UsernameEntry'
 import { useWebSocket } from './hooks/useWebSocket'
 
 // Backend URL - use environment variable or default to EC2 backend
-const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || 'http://13.204.154.246:5000'
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || 'http://15.206.2.160:5000'
 // Convert https:// to wss:// and http:// to ws:// for WebSocket
 const getWebSocketURL = (url) => {
   if (url.startsWith('https://')) {
