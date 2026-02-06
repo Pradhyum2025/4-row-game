@@ -6,7 +6,7 @@ import { useWebSocket } from './hooks/useWebSocket'
 
 // Backend URL from .env (Vite loads .env / .env.local)
 // Vite environment variables are embedded at build/dev server startup time
-const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || 'http://localhost:5000'
+const BACKEND_URL = 'http://3.108.10.182:5000' || import.meta.env.VITE_BACKEND_URL || 'http://3.108.10.182:5000'
 
 // Debug: Log the environment variable (remove in production if needed)
 if (import.meta.env.DEV) {
@@ -18,15 +18,15 @@ if (import.meta.env.DEV) {
 
 // Convert HTTP/HTTPS URL to WebSocket URL
 const getWebSocketURL = (url) => {
-  if (!url) return 'ws://localhost:5000/ws'
+  if (!url) return 'ws://3.108.10.182:5000/ws'
   if (url.startsWith('https://')) return url.replace('https://', 'wss://') + '/ws'
   if (url.startsWith('http://')) return url.replace('http://', 'ws://') + '/ws'
   return url + '/ws'
 }
 
 // Use explicit env vars if provided, otherwise derive from BACKEND_URL
-const WS_URL = import.meta.env.VITE_WS_URL || getWebSocketURL(BACKEND_URL)
-const API_URL = import.meta.env.VITE_API_URL || BACKEND_URL
+const WS_URL = 'http://3.108.10.182:5000' || import.meta.env.VITE_WS_URL || getWebSocketURL(BACKEND_URL)
+const API_URL = 'http://3.108.10.182:5000' || import.meta.env.VITE_API_URL || BACKEND_URL
 
 // Debug: Log final URLs (remove in production if needed)
 if (import.meta.env.DEV) {

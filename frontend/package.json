@@ -7,7 +7,9 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "start": "vite preview --host 0.0.0.0 --port 5173"
+    "start": "vite preview --host 0.0.0.0 --port 5173",
+    "clean": "rm -rf node_modules/.vite dist",
+    "dev:clean": "npm run clean && npm run dev"
   },
   "dependencies": {
     "react": "^18.2.0",
