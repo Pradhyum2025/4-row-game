@@ -27,7 +27,6 @@ export function useWebSocket(url) {
             ws.close()
             return
           }
-          console.log('WebSocket connected to', url)
           setReadyState(WebSocket.OPEN)
           // Send any queued messages
           while (messageQueueRef.current.length > 0) {
@@ -56,7 +55,6 @@ export function useWebSocket(url) {
             
             try {
               const message = JSON.parse(messageStr)
-              console.log('Received message:', message)
               setLastMessage(message)
             } catch (e) {
               console.error(`Failed to parse message ${i}:`, e, messageStr)
@@ -114,14 +112,9 @@ export function useWebSocket(url) {
 
   const sendMessage = (message) => {
     if (wsRef.current && wsRef.current.readyState === WebSocket.OPEN) {
-      console.log('Sending message:', message)
       wsRef.current.send(JSON.stringify(message))
     } else if (wsRef.current && wsRef.current.readyState === WebSocket.CONNECTING) {
-      // Queue message if connecting
-      console.log('WebSocket connecting, queueing message:', message)
       messageQueueRef.current.push(message)
-    } else {
-      console.warn('WebSocket is not open. ReadyState:', wsRef.current?.readyState)
     }
   }
 

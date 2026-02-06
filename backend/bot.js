@@ -1,4 +1,4 @@
-const { copyBoard, isValidColumn, isColumnFull, getValidMoves, getOpponent, checkWin, makeMove, COLS, ROWS } = require('./game');
+const { copyBoard, isValidColumn, isColumnFull, getValidMoves, getOpponent, checkWin, makeMove, COLS, ROWS } = require('./utils/boardUtils');
 
 class Bot {
   constructor(botPlayer) {
