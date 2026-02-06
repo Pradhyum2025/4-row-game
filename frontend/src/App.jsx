@@ -25,7 +25,7 @@ const getWebSocketURL = (url) => {
 }
 
 // Use explicit env vars if provided, otherwise derive from BACKEND_URL
-const WS_URL = 'http://3.108.10.182:5000' || import.meta.env.VITE_WS_URL || getWebSocketURL(BACKEND_URL)
+const WS_URL = 'ws://3.108.10.182:5000/ws' || import.meta.env.VITE_WS_URL || getWebSocketURL(BACKEND_URL)
 const API_URL = 'http://3.108.10.182:5000' || import.meta.env.VITE_API_URL || BACKEND_URL
 
 // Debug: Log final URLs (remove in production if needed)
