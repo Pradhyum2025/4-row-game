@@ -21,8 +21,7 @@ dist/
 *.swo
 
 # Environment
-.env
-.env.local
+
 
 # Docker
 *.log
