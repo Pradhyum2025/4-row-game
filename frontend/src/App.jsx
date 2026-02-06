@@ -11,8 +11,8 @@ const getWebSocketURL = (url) => {
   if (url.startsWith('http://')) return url.replace('http://', 'ws://') + '/ws'
   return url + '/ws'
 }
-const WS_URL = import.meta.env.VITE_WS_URL || getWebSocketURL(BACKEND_URL)
-const API_URL = import.meta.env.VITE_API_URL || BACKEND_URL
+const WS_URL = import.meta.env.VITE_BACKEND_URL || getWebSocketURL(BACKEND_URL)
+const API_URL = import.meta.env.VITE_BACKEND_URL || BACKEND_URL
 
 export default function App() {
   const [view, setView] = useState('username')
