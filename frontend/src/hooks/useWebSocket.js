@@ -85,7 +85,11 @@ export function useWebSocket(url) {
               }
             }, 5000)
           } else if (event.code === 1006) {
-            console.error('WebSocket connection failed (1006). Ensure the backend is running and the frontend URL is correct (e.g. VITE_BACKEND_URL=http://localhost:8080 in .env.local).')
+            console.error(`WebSocket connection failed (1006) to ${url}. Ensure:`)
+            console.error('1. Backend server is running')
+            console.error('2. VITE_BACKEND_URL in .env.local matches your backend URL')
+            console.error('3. Dev server was restarted after changing .env files')
+            console.error(`   Current URL: ${url}`)
           }
         }
       } catch (error) {
