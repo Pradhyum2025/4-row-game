@@ -71,21 +71,21 @@ export function useWebSocket(url) {
         ws.onclose = (event) => {
           if (!isMountedRef.current) return
           
-          console.log('WebSocket closed:', event.code, event.reason || 'No reason')
           setReadyState(WebSocket.CLOSED)
-          
+          // 1000 = normal close (e.g. component unmount / Strict Mode). Don't log as error.
+          if (event.code !== 1000) {
+            console.log('WebSocket closed:', event.code, event.reason || 'No reason')
+          }
           // Don't reconnect on 1006 (abnormal closure) - backend likely not running/configured
-          // Only reconnect for network errors (1001, 1002, etc.) but not 1006
           if (event.code !== 1000 && event.code !== 1006 && isMountedRef.current) {
-            // Reconnect after a delay, but limit attempts
             reconnectTimeoutRef.current = setTimeout(() => {
               if (isMountedRef.current) {
                 console.log('Attempting to reconnect WebSocket...')
                 connect()
               }
-            }, 5000) // Increased delay to reduce spam
+            }, 5000)
           } else if (event.code === 1006) {
-            console.error('WebSocket connection failed (1006). Please ensure the backend server is running and has been restarted with the latest code.')
+            console.error('WebSocket connection failed (1006). Ensure the backend is running and the frontend URL is correct (e.g. VITE_BACKEND_URL=http://localhost:8080 in .env.local).')
           }
         }
       } catch (error) {

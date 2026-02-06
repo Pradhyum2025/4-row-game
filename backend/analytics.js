@@ -1,3 +1,4 @@
+require('dotenv').config();
 const { Kafka } = require('kafkajs');
 
 class KafkaProducer {

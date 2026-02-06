@@ -4,15 +4,11 @@ import Leaderboard from './components/Leaderboard'
 import UsernameEntry from './components/UsernameEntry'
 import { useWebSocket } from './hooks/useWebSocket'
 
-// Backend URL - use environment variable or default to EC2 backend
-const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || 'http://15.206.2.160:5000'
-// Convert https:// to wss:// and http:// to ws:// for WebSocket
+// Backend URL from .env (Vite loads .env / .env.local)
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || 'http://localhost:8080'
 const getWebSocketURL = (url) => {
-  if (url.startsWith('https://')) {
-    return url.replace('https://', 'wss://') + '/ws'
-  } else if (url.startsWith('http://')) {
-    return url.replace('http://', 'ws://') + '/ws'
-  }
+  if (url.startsWith('https://')) return url.replace('https://', 'wss://') + '/ws'
+  if (url.startsWith('http://')) return url.replace('http://', 'ws://') + '/ws'
   return url + '/ws'
 }
 const WS_URL = import.meta.env.VITE_WS_URL || getWebSocketURL(BACKEND_URL)

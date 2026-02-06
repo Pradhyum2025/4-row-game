@@ -1,3 +1,5 @@
+require('dotenv').config();
+
 const express = require('express');
 const http = require('http');
 const WebSocket = require('ws');
@@ -27,15 +29,14 @@ function getDatabaseConnectionString() {
     const sslMode = process.env.PGSSLMODE || 'require';
     return `postgresql://${user}:${password}@${host}:${port}/${database}?sslmode=${sslMode}`;
   }
-  
-  // Fallback to local development
-  return 'postgres://postgres:PostGre%402025@localhost:5432/connectfour?sslmode=disable';
+
+  throw new Error('Database not configured. Set DATABASE_URL or PGUSER, PGPASSWORD, PGHOST, PGPORT, PGDATABASE in .env');
 }
 
 const DB_CONN_STR = getDatabaseConnectionString();
-const KAFKA_BROKER = process.env.KAFKA_BROKER || 'localhost:9092';
-const KAFKA_TOPIC = process.env.KAFKA_TOPIC || 'game-events';
-const PORT = process.env.PORT || 8080;
+const KAFKA_BROKER = process.env.KAFKA_BROKER ?? 'localhost:9092';
+const KAFKA_TOPIC = process.env.KAFKA_TOPIC ?? 'game-events';
+const PORT = process.env.PORT ?? '8080';
 
 const GameStatus = {
   WAITING: 'waiting',
