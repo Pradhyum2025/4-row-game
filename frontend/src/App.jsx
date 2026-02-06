@@ -5,7 +5,7 @@ import UsernameEntry from './components/UsernameEntry'
 import { useWebSocket } from './hooks/useWebSocket'
 
 // Backend URL from .env (Vite loads .env / .env.local)
-const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || 'http://localhost:8080'
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || 'http:'
 const getWebSocketURL = (url) => {
   if (url.startsWith('https://')) return url.replace('https://', 'wss://') + '/ws'
   if (url.startsWith('http://')) return url.replace('http://', 'ws://') + '/ws'
