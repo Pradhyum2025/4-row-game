@@ -44,7 +44,17 @@ export default function App() {
           ? JSON.parse(message.payload) 
           : message.payload
         
+        // Clear waiting countdown immediately
+        if (window.countdownInterval) {
+          clearInterval(window.countdownInterval)
+          window.countdownInterval = null
+        }
         setCountdown(null)
+        
+        const playerColor = payload.player_symbol !== undefined
+          ? payload.player_symbol
+          : (payload.player1 === username ? 1 : 2)
+        
         setGameState({
           gameId: payload.game_id,
           board: payload.board || [],
@@ -55,7 +65,7 @@ export default function App() {
           player1: payload.player1,
           player2: payload.player2,
           isBotGame: payload.is_bot_game || false,
-          playerColor: payload.player1 === username ? 1 : 2,
+          playerColor,
         })
         setView('game')
         break
@@ -72,20 +82,29 @@ export default function App() {
             clearInterval(window.countdownInterval)
             window.countdownInterval = null
           }
-          
+
+          // Merge full state from server - never compute turn locally
+          const nextPlayerColor = statePayload.player1 && username
+            ? (statePayload.player1 === username ? 1 : 2)
+            : undefined
           setGameState((prev) => ({
             ...prev,
+            gameId: statePayload.game_id || prev?.gameId,
             board: statePayload.board || prev?.board || [],
-            currentTurn: statePayload.current_turn !== undefined 
-              ? statePayload.current_turn 
+            currentTurn: statePayload.current_turn !== undefined
+              ? statePayload.current_turn
               : prev?.currentTurn || 1,
             status: statePayload.status || prev?.status || 'active',
-            winner: statePayload.winner !== undefined 
-              ? statePayload.winner 
+            winner: statePayload.winner !== undefined
+              ? statePayload.winner
               : prev?.winner || '',
-            isDraw: statePayload.is_draw !== undefined 
-              ? statePayload.is_draw 
+            isDraw: statePayload.is_draw !== undefined
+              ? statePayload.is_draw
               : prev?.isDraw || false,
+            player1: statePayload.player1 ?? prev?.player1,
+            player2: statePayload.player2 ?? prev?.player2,
+            isBotGame: statePayload.is_bot_game ?? prev?.isBotGame,
+            playerColor: nextPlayerColor ?? prev?.playerColor ?? 1,
           }))
         }
         break

@@ -103,7 +103,14 @@ class SocketHandler {
       
       if (started) {
         this.publishGameStartedEvent(game);
-        this.sendGameStarted(client, game);
+        // Emit GAME_STARTED to BOTH players - Player 2 is current client
+        const client1 = this.getClientByUsername(game.player1.username);
+        const client2 = client;
+        if (client1) {
+          client1.gameID = game.id;
+          this.sendGameStarted(client1, game);
+        }
+        this.sendGameStarted(client2, game);
       } else {
         this.sendWaiting(client);
       }
@@ -241,10 +248,17 @@ class SocketHandler {
       return;
     }
     
+    const opponentName = client.username === game.player1.username
+      ? game.player2.username
+      : game.player1.username;
+    const playerSymbol = client.username === game.player1.username ? 1 : 2;
+    
     const payload = {
       game_id: game.id,
       player1: game.player1.username,
       player2: game.player2.username,
+      opponent_name: opponentName,
+      player_symbol: playerSymbol,
       is_bot_game: game.isBotGame,
       board: game.board,
       current_turn: game.currentTurn,
