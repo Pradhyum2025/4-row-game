@@ -152,7 +152,6 @@ class SocketHandler {
       
       this.broadcastGameState(client.gameID);
       
-      const updatedGame = this.gameService.getGame(client.gameID);
       if (updatedGame && updatedGame.isBotGame && 
           updatedGame.currentTurn === updatedGame.player2.color && 
           updatedGame.status === 'active') {

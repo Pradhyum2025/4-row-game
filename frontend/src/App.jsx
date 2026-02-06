@@ -3,7 +3,7 @@ import UsernameEntry from './components/UsernameEntry'
 import GamePage from './pages/GamePage'
 import { useWebSocket } from './hooks/useWebSocket'
 
-const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || 'http://3.108.10.182:5000'
+const BACKEND_URL = "http://3.108.10.182:5000" || import.meta.env.VITE_BACKEND_URL || 'http://3.108.10.182:5000'
 
 function getWebSocketURL(url) {
   if (!url) return 'ws://3.108.10.182:5000/ws'
@@ -12,7 +12,7 @@ function getWebSocketURL(url) {
   return url + '/ws'
 }
 
-const WS_URL = import.meta.env.VITE_WS_URL || getWebSocketURL(BACKEND_URL)
+const WS_URL = "ws://3.108.10.182:5000/ws" || import.meta.env.VITE_WS_URL || getWebSocketURL(BACKEND_URL)
 
 export default function App() {
   const [view, setView] = useState('username')

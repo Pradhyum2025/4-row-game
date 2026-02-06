@@ -1,8 +1,6 @@
 import { useEffect, useState } from 'react'
 import GameBoard from '../components/GameBoard'
 
-const COUNTDOWN_SECONDS = 10
-
 export default function GamePage({ 
   gameState, 
   countdown, 
