@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import UsernameEntry from './components/UsernameEntry'
 import GamePage from './pages/GamePage'
 import { useWebSocket } from './hooks/useWebSocket'
@@ -20,13 +20,8 @@ export default function App() {
   const [gameState, setGameState] = useState(null)
   const [countdown, setCountdown] = useState(null)
 
-  const { lastMessage, sendMessage, readyState } = useWebSocket(WS_URL)
-
-  useEffect(() => {
-    if (lastMessage) {
-      handleMessage(lastMessage)
-    }
-  }, [lastMessage, username])
+  const handleMessageRef = useRef(null)
+  const { sendMessage, readyState } = useWebSocket(WS_URL, (msg) => handleMessageRef.current?.(msg))
 
   useEffect(() => {
     return () => {
@@ -145,6 +140,7 @@ export default function App() {
         break
     }
   }
+  handleMessageRef.current = handleMessage
 
   const handleJoin = (user) => {
     setUsername(user)

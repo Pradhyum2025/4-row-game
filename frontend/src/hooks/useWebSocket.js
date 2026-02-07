@@ -1,12 +1,14 @@
 import { useEffect, useRef, useState } from 'react'
 
-export function useWebSocket(url) {
+export function useWebSocket(url, onMessage) {
   const [lastMessage, setLastMessage] = useState(null)
   const [readyState, setReadyState] = useState(WebSocket.CONNECTING)
   const wsRef = useRef(null)
   const messageQueueRef = useRef([])
   const reconnectTimeoutRef = useRef(null)
   const isMountedRef = useRef(true)
+  const onMessageRef = useRef(onMessage)
+  onMessageRef.current = onMessage
 
   useEffect(() => {
     isMountedRef.current = true
@@ -56,6 +58,11 @@ export function useWebSocket(url) {
             try {
               const message = JSON.parse(messageStr)
               setLastMessage(message)
+              // Process each message immediately - fixes batching issue where
+              // GAME_STARTED is overwritten by GAME_STATE_UPDATE before useEffect runs
+              if (onMessageRef.current) {
+                onMessageRef.current(message)
+              }
             } catch (e) {
               console.error(`Failed to parse message ${i}:`, e, messageStr)
             }

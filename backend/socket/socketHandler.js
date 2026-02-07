@@ -103,7 +103,6 @@ class SocketHandler {
       
       if (started) {
         this.publishGameStartedEvent(game);
-        // Emit GAME_STARTED to BOTH players - Player 2 is current client
         const client1 = this.getClientByUsername(game.player1.username);
         const client2 = client;
         if (client1) {
